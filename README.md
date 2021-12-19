@@ -54,6 +54,57 @@ Each restaurant has own category.
 | Order | UserId, CompanyId  |
 | Food Menu | Name, Pic, desc, Category |
 
+## Models Detils:
+### Role
+
+| Key | Type | Require | Default 
+| --- | --- | --- | --- |
+| Name | String | Yes |-  
+| Permission | Array of String | Yes |["Read","Create"] 
+
+### User
+
+| Key | Type | Require | Default 
+| --- | --- | --- | --- |
+| UserName | String | Yes |-  
+| email | String | Yes |- 
+| password | String | Yes |-  
+| Role | Ref to **Role** | Yes |3u84474829hr9uh34  
+| Location | String | No |Qassim -Burydah  
+
+### Company
+
+| Key | Type | Require | Default 
+| --- | --- | --- | --- |
+| name | String | Yes |-  
+| Restaurants | Ref to **Restaurant** | Yes |- 
+| offers | String | No |-  
+
+### Restaurant
+
+| Key | Type | Require | Default 
+| --- | --- | --- | --- |
+| name | String | Yes |-  
+| Category | String | Yes |- 
+| Pic | String | Yes |-  
+| Menu | Ref to **FoodMenu** | Yes |3u84474829hr9uh34  
+| Delivery price | Number | Yes |- 
+
+
+### Order
+| Key | Type | Require | Default 
+| --- | --- | --- | --- |
+| UserId | Ref to **User** | Yes |-  
+| CompanyId | Ref to **Company** | Yes |-
+
+### Food Menu
+
+| Key | Type | Require | Default 
+| --- | --- | --- | --- |
+| name | String | Yes |-  
+| desc | String | No |-  
+| Category | String | Yes |- 
+| Pic | String | Yes |-  
 
 
 # ER-Digram
@@ -64,20 +115,20 @@ Each restaurant has own category.
 ![This is an image](./ERDD.png)
 
 # Backend routes
-| HTTP Method | URL | Success status | Error Status |  For How
-| ---         |     ---      |          --- |          --- |          --- |
-| Post   | `/login`     | 200    | 400   | User , Admin, Company
-| Post     | `/signUp`      |201     | 400   |User , Admin, Company
-| Post    | `/additem`       |201     | 400 |Admin, Company
-| Post     | `/addRest`       |201     | 400|Company
-| get     | `/getRest`       |200     | 400 |User , Admin, Company
-| get     | `/users`       |200     | 400 |Admin
-| get   |`/cart`|200     | 400  |User 
-| get     | `/order`       |200     | 400|User
-| delete     | `/user/id `      |200     | 400|Admin
-| delete     | `/delRest/id`       |200 | 400 | Company
-| Put     | `/edititem/id`       |200| 400 | Company
-| Put     | `/editRest/id`       |200| 400 |User , Admin, Company
+| HTTP Method | URL | Success status | Error Status |  Permissions| Request Body |
+| ---         |     ---      |     ---      |          --- |          --- |          --- |
+| Post   | `/login`     | 200    | 400   | User , Admin, Company| {userName,email,password}
+| Post     | `/signUp`      |201     | 400   |User , Admin, Company |{userName,email,password}
+| Post    | `/additem`       |201     | 400 |Admin, Company| {name,Category,Pic}
+| Post     | `/addRest`       |201     | 400|Company| {name,Category,Pic, Delivery Price}
+| get     | `/getRest`       |200     | 400 |User , Admin, Company| -
+| get     | `/users`       |200     | 400 |Admin|-
+| get   |`/cart`|200     | 400  |User |-
+| get     | `/order`       |200     | 400|User|-
+| delete     | `/user/id `      |200     | 400|Admin|{_id}
+| delete     | `/delRest/id`       |200 | 400 | Company|{_id}
+| Put     | `/edititem/id`       |200| 400 | Company|{_id,name,Category,Pic}
+| Put     | `/editRest/id`       |200| 400 |User , Admin, Company|{_id,name,Category,Pic, Delivery Price}
 # UML-Digram
 
 ![This is an image](./UMLL.png)
@@ -114,3 +165,5 @@ Each restaurant has own category.
 2. My github Page => https://github.com/Eyad911
 
 3. Link to my presentation=> https://eyad.com
+
+4. Link to Client => https://github.com/MP-Project-Eyad/client
