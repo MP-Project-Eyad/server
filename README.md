@@ -33,20 +33,20 @@ for each company it has own Restaurants.
 - **Resturant Menu:**
 Each restaurant has own category.
 # Backend routes
-| HTTP Method | URL | Success status | Error Status | 
-| ---         |     ---      |          --- |          --- |
-| Post   | `/login`     | 200    | 400   | 
-| Post     | `/signUp`      |201     | 400   |
-| Post    | `/additem`       |201     | 400 |
-| Post     | `/addRest`       |201     | 400|
-| get     | `/getRest`       |200     | 400 |
-| get     | `/users`       |200     | 400 |
-| get   |`/cart`|200     | 400  |
-| get     | `/order`       |200     | 400|
-| delete     | `/user/id `      |200     | 400|
-| delete     | `/delRest/id`       |200 | 400 |
-| Put     | `/edititem/id`       |200| 400 |
-| Put     | `/editRest/id`       |200| 400 |
+| HTTP Method | URL | Success status | Error Status |  For How
+| ---         |     ---      |          --- |          --- |          --- |
+| Post   | `/login`     | 200    | 400   | User , Admin, Company
+| Post     | `/signUp`      |201     | 400   |User , Admin, Company
+| Post    | `/additem`       |201     | 400 |Admin, Company
+| Post     | `/addRest`       |201     | 400|Company
+| get     | `/getRest`       |200     | 400 |User , Admin, Company
+| get     | `/users`       |200     | 400 |Admin
+| get   |`/cart`|200     | 400  |User 
+| get     | `/order`       |200     | 400|User
+| delete     | `/user/id `      |200     | 400|Admin
+| delete     | `/delRest/id`       |200 | 400 | Company
+| Put     | `/edititem/id`       |200| 400 | Company
+| Put     | `/editRest/id`       |200| 400 |User , Admin, Company
 # Models
 ### Refrance:
 | Models | Refrance of |
