@@ -57,54 +57,54 @@ Each restaurant has own category.
 ## Models Detils:
 ### Role
 
-| Key | Type | Require | Default 
+| Key | Type | Options | Default 
 | --- | --- | --- | --- |
-| Name | String | Yes |-  
-| Permission | Array of String | Yes |["Read","Create"] 
+| Name | String | Require |-  
+| Permission | Array of String | Require |["Read","Create"] 
 
 ### User
 
-| Key | Type | Require | Default 
+| Key | Type | Options | Default 
 | --- | --- | --- | --- |
-| UserName | String | Yes |-  
-| email | String | Yes |- 
-| password | String | Yes |-  
-| Role | Ref to **Role** | Yes |3u84474829hr9uh34  
-| Location | String | No |Qassim -Burydah  
+| UserName | String | Require,Unique |-  
+| email | String | Require,Unique |- 
+| password | String | Require |-  
+| Role | Ref to **Role** | Require |3u84474829hr9uh34  
+| Location | String | - |Qassim -Burydah  
 
 ### Company
 
-| Key | Type | Require | Default 
+| Key | Type | Options | Default 
 | --- | --- | --- | --- |
-| name | String | Yes |-  
-| Restaurants | Ref to **Restaurant** | Yes |- 
-| offers | String | No |-  
+| name | String | Require |-  
+| Restaurants | Ref to **Restaurant** | Require |- 
+| offers | String | - |-  
 
 ### Restaurant
 
-| Key | Type | Require | Default 
+| Key | Type | Options | Default 
 | --- | --- | --- | --- |
-| name | String | Yes |-  
-| Category | String | Yes |- 
-| Pic | String | Yes |-  
-| Menu | Ref to **FoodMenu** | Yes |-  
-| Delivery price | Number | Yes |- 
+| name | String | Require |-  
+| Category | String | Require |- 
+| Pic | String | Require |-  
+| Menu | Ref to **FoodMenu** | Require |-  
+| Delivery price | Number | Require |- 
 
 
 ### Order
-| Key | Type | Require | Default 
+| Key | Type | Options | Default 
 | --- | --- | --- | --- |
-| UserId | Ref to **User** | Yes |-  
-| CompanyId | Ref to **Company** | Yes |-
+| UserId | Ref to **User** | Require |-  
+| CompanyId | Ref to **Company** | Require |-
 
 ### Food Menu
 
-| Key | Type | Require | Default 
+| Key | Type | Options | Default 
 | --- | --- | --- | --- |
-| name | String | Yes |-  
-| desc | String | No |-  
-| Category | String | Yes |- 
-| Pic | String | Yes |-  
+| name | String | Require |-  
+| desc | String | - |-  
+| Category | String | Require |- 
+| Pic | String | Require |-  
 
 
 # ER-Digram
