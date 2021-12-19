@@ -33,6 +33,28 @@ for each company it has own Restaurants.
 - **Resturant Menu:**
 Each restaurant has own category.
 
+# Models
+### Refrance:
+| Models | Refrance of |
+| --- | --- |
+| Role | -  |
+| User | Ref: Role , Ref :Restaurant
+| Company | Ref: Restaurants
+| Restaurant | Ref: Food Menu  |
+| Order | Ref: Company , Ref: User  |
+| Food Menu | -  |
+
+### Models Keys:
+| Models | Keys |
+| --- | --- |
+| Role | Name, Permission  
+| User | UserName, email,password,Role,Location 
+| Company | name, Restaurants, offers
+| Restaurant |name, Category ,Menu,Pic, Delivery price  |
+| Order | UserId, CompanyId  |
+| Food Menu | Name, Pic, desc, Category |
+
+
 
 # ER-Digram
 
@@ -63,5 +85,18 @@ Each restaurant has own category.
 
 ![This is an image](./WF4.png)
 
+# Upload our Work on github:
 
+| Command | Description |
+| --- | --- |
+| git add . | add our work  |
+| git commit | add comment before upload it staged 
+| git push | Upload it to your github Repo
 
+# Links:
+
+1. Link to Trello board => https://trello.com/b/0o0jzsX9/mp-project-eyad
+
+2. My github Page => https://github.com/Eyad911
+
+3. Link to my presentation=> https://eyad.com
