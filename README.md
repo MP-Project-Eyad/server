@@ -32,7 +32,21 @@ for each company it has own Restaurants.
 
 - **Resturant Menu:**
 Each restaurant has own category.
-
+# Backend routes
+| HTTP Method | URL | Success status | Error Status | 
+| ---         |     ---      |          --- |          --- |
+| Post   | `/login`     | 200    | 400   | 
+| Post     | `/signUp`      |201     | 400   |
+| Post    | `/additem`       |201     | 400 |
+| Post     | `/addRest`       |201     | 400|
+| get     | `/getRest`       |200     | 400 |
+| get     | `/users`       |200     | 400 |
+| get   |`/cart`|200     | 400  |
+| get     | `/order`       |200     | 400|
+| delete     | `/user/id `      |200     | 400|
+| delete     | `/delRest/id`       |200 | 400 |
+| Put     | `/edititem/id`       |200| 400 |
+| Put     | `/editRest/id`       |200| 400 |
 # Models
 ### Refrance:
 | Models | Refrance of |
