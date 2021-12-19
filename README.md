@@ -87,7 +87,7 @@ Each restaurant has own category.
 | name | String | Yes |-  
 | Category | String | Yes |- 
 | Pic | String | Yes |-  
-| Menu | Ref to **FoodMenu** | Yes |3u84474829hr9uh34  
+| Menu | Ref to **FoodMenu** | Yes |-  
 | Delivery price | Number | Yes |- 
 
 
