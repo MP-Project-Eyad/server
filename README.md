@@ -51,7 +51,7 @@ Each restaurant has own category.
 ### Main Page
 ![This is an image](./WF1.png)
 
-### When Click on **Show more**
+### When Click on **Show offers**
 ![This is an image](./WF2.png)
 
 ### Chose the Restaurant
