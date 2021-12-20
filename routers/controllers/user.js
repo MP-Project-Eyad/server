@@ -117,10 +117,31 @@ const login = (req, res) => {
         res.status(400).json(err);
       });
   };
+  const verifyAccount = async (req, res) => {
+    const { id, code } = req.body;
+    
+  
+    const user = await userModel.findOne({ _id: id });
+  console.log(user);
+    if (user.activeCode == code) {
+      userModel
+        .findByIdAndUpdate(id, { active: true, activeCode:""}, { new: true })
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((error) => {
+          res.status(400).json(error);
+        });
+    } else {
+      res.status(400).json("Wrong code..");
+    }
+  };
+
 
 
 module.exports = {
     Register,
     login,
-    getUser
+    getUser,
+    verifyAccount
   };

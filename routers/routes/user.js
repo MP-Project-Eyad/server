@@ -6,7 +6,8 @@ const express = require("express");
 const {
   Register,
   login,
-  getUser
+  getUser,
+  verifyAccount
 } = require("./../controllers/user");
 const { authentication } = require("./../middleware/authentication");
 const { authorization } = require("./../middleware/authorization");
@@ -14,8 +15,9 @@ const { authorization } = require("./../middleware/authorization");
 const userRouter = express.Router();
 userRouter.post("/signUp", Register);
 userRouter.post("/login",login);
+userRouter.post("/verify_account", verifyAccount);
 
-userRouter.get("users",getUser);
+userRouter.get("/users",getUser);
 
 
 module.exports = userRouter;
