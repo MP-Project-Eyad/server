@@ -62,6 +62,65 @@ const Register = async (req, res) => {
     });
 };
 
+const login = (req, res) => {
+    const { userName, email, password } = req.body;
+  
+    userModel
+      .findOne({ $or: [{ email }, { userName }] })
+      .then(async (result) => {
+        if (result) {
+        //   console.log(result);
+          if (result.email == email || result.userName == userName) {
+            const secret = process.env.SECRETKEY;
+            const hashedpass = await bcrypt.compare(password, result.password);
+            // console.log(hashedpass);
+            // console.log(secret);
+            const payload = {
+              role: result.role,
+              id: result._id,
+              username: result.username,
+              email: result.email,
+              
+            };
+            // console.log(result);
+            option = {
+              expiresIn: "6000000m",
+            };
+  
+            const token = await jwt.sign(payload, secret, option);
+            // console.log("thistoken",token);
+            if (hashedpass) {
+              if (result.active == true){
+              res.status(200).json({ result, token });
+            }else{res.status(404).json("Active your Account");}} else {
+              res.status(404).json("worng email or password");
+            }
+          } else {
+            res.status(404).json("worng email or password");
+          }
+        } else {
+          res.status(400).json("email or UserName does not exist");
+        }
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
+  
+  const getUser = (req, res) => {
+    userModel
+      .find({})
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
+
+
 module.exports = {
     Register,
+    login,
+    getUser
   };
