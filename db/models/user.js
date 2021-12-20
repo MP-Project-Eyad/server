@@ -7,10 +7,10 @@ const user = new mongoose.Schema({
   passwordCode: { type: String },
   activeCode: { type: String },
   active: { type: Boolean, default: false },
-  avatar: { type: String, default: "avatar" },
+  avatar: { type: String, default: "http://norapc.org/wp-content/uploads/2015/07/avatar-blank.png" },
   role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", default: "" },
   location: {type: Location},
 });
 
-// module.exports = mongoose.model("User", user);
+module.exports = mongoose.model("User", user);
 
