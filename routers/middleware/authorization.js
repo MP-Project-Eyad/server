@@ -4,7 +4,7 @@ const authorization = async (req, res, next) => {
   try {
     const roleId = req.token.role;
     const result = await roleModel.findById(roleId);
-    if (result.role === "admin") {
+    if (result.role === "Admin") {
       next();
     } else {
       res.status(403).json({ message: "forbidden" });

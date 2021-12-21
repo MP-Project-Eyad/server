@@ -14,6 +14,11 @@ app.use(roleRouter);
 const userRouter = require('./routers/routes/user');
 app.use(userRouter);
 
+const restaurantRouter = require("./routers/routes/restaurant");
+app.use(restaurantRouter)
+
+
+
 
 
 
