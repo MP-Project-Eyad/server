@@ -45,8 +45,26 @@ const getRestaurants = (req, res) => {
     });
   };
 
+  const updateRestaurant = (req, res) => {
+    const { id } = req.params;
+    const { Name, Category, Picture, DeliveryPrice, Menu } = req.body;
+  
+    console.log(id);
+    restaurantModel
+      .findByIdAndUpdate(id, { $set: { Name,Category,Picture,DeliveryPrice } }, { new: true })
+      .exec()
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
+
 module.exports = {
   createRestaurant,
   getRestaurants,
-  getRestaurantById
+  getRestaurantById,
+  updateRestaurant
 };
