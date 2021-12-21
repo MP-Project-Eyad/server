@@ -4,12 +4,13 @@ const restaurantModel = require("./../../db/models/restaurant");
 
 const createItem = (req, res) => {
     console.log(req.token);
-    const { Name, Category, Picture, Desc,RestaurantName,  } = req.body;
+    const { Name, Category, Picture, Desc,RestaurantName,price  } = req.body;
     const newItem = new foodmenuModel({
       Name,
       Picture,
       Category,
       Desc,
+      price,
       RestaurantName
     });
     newItem
@@ -24,7 +25,16 @@ const createItem = (req, res) => {
       });
   };
 
-  
+  const getItems = (req, res) => {
+    foodmenuModel
+      .find({}).populate("RestaurantName","Name  -_id")
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
 
 
-  module.exports = {createItem}
+  module.exports = {createItem,getItems}
