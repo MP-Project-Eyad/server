@@ -125,5 +125,17 @@ const companyLogin = (req, res) => {
     }
   };
 
+  const getCompany = (req, res) => {
+    companyModel
+      .find({})
+      .populate("Restaurant")
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
 
-module.exports = {companyRegister,companyLogin,verifyAccountComp}
+
+module.exports = {companyRegister,companyLogin,verifyAccountComp,getCompany}
