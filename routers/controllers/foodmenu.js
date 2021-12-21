@@ -49,5 +49,32 @@ const createItem = (req, res) => {
     });
   };
 
+  const updateItem = (req, res) => {
+    const { id } = req.params;
+    const { Name,
+        Picture,
+        Category,
+        Desc,
+        price, } = req.body;
+  
+    console.log(id);
+    foodmenuModel
+      .findByIdAndUpdate(id, { $set: { Name,
+        Picture,
+        Category,
+        Desc,
+        price } }, { new: true })
+      .exec()
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
 
-  module.exports = {createItem,getItems,getItemById}
+  
+
+
+  module.exports = {createItem,getItems,getItemById, updateItem}
