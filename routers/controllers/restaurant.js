@@ -32,7 +32,21 @@ const getRestaurants = (req, res) => {
       });
   };
 
+  const getRestaurantById = (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    restaurantModel
+    .findById(id).exec()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+  };
+
 module.exports = {
   createRestaurant,
-  getRestaurants
+  getRestaurants,
+  getRestaurantById
 };
