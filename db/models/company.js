@@ -9,7 +9,7 @@ const company = new mongoose.Schema({
   active: { type: Boolean, default: true },
   avatar: { type: String, default: "http://norapc.org/wp-content/uploads/2015/07/avatar-blank.png" },
   Restaurant: [{ type: mongoose.Schema.Types.ObjectId, ref: "Restaurant" }],
-  Offers: { type: mongoose.Schema.Types.ObjectId, ref: "Offers" },
+  Offers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Offers" }],
   location: {type: String},
 });
 
