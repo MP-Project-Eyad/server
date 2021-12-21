@@ -14,10 +14,14 @@ app.use(roleRouter);
 const userRouter = require('./routers/routes/user');
 app.use(userRouter);
 
+const companyRouter = require('./routers/routes/company');
+app.use(companyRouter);
+
 const restaurantRouter = require("./routers/routes/restaurant");
 app.use(restaurantRouter)
 
-
+const foodmenuRouter = require("./routers/routes/foodmenu");
+app.use(foodmenuRouter)
 
 
 
