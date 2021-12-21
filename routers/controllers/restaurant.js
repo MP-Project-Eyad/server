@@ -30,7 +30,7 @@ const createRestaurant = (req, res) => {
 const getRestaurants = (req, res) => {
     restaurantModel
       .find({})
-      .populate("Menu")
+      .populate("Menu","Name  -_id")
       .then((result) => {
         res.status(200).json(result);
       })
