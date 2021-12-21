@@ -105,7 +105,25 @@ const companyLogin = (req, res) => {
         res.status(400).json(err);
       });
   };
+  const verifyAccountComp = async (req, res) => {
+    const { id, code } = req.body;
+    
+  
+    const user = await userModel.findOne({ _id: id });
+  console.log(user);
+    if (user.activeCode == code) {
+        companyModel
+        .findByIdAndUpdate(id, { active: true, activeCode:""}, { new: true })
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((error) => {
+          res.status(400).json(error);
+        });
+    } else {
+      res.status(400).json("Wrong code..");
+    }
+  };
 
 
-
-module.exports = {companyRegister,companyLogin}
+module.exports = {companyRegister,companyLogin,verifyAccountComp}
