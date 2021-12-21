@@ -62,9 +62,26 @@ const getRestaurants = (req, res) => {
       });
   };
 
+  const deletedRestaurant = (req, res) => {
+    const { id } = req.params;
+  
+    console.log(id);
+    restaurantModel
+      .findByIdAndRemove(id)
+      .exec()
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
+
 module.exports = {
   createRestaurant,
   getRestaurants,
   getRestaurantById,
-  updateRestaurant
+  updateRestaurant,
+  deletedRestaurant
 };
