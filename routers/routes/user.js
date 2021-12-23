@@ -11,7 +11,8 @@ const {
   checkEmail,
   resetPassword,
   addToUserCart,
-  removeUserCart
+  removeUserCart,
+  getCart
 } = require("./../controllers/user");
 const { authentication } = require("./../middleware/authentication");
 const { authorization } = require("./../middleware/authorization");
@@ -26,6 +27,7 @@ userRouter.post("/resetpass", resetPassword);
 // cart
 userRouter.put("/yourcart/:email/:ObjectId", addToUserCart);
 userRouter.put("/removecart/:email/:_id", removeUserCart);
+userRouter.get("/cart/:email", getCart);
 
 
 userRouter.get("/users", authentication,  getUser);

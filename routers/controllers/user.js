@@ -242,6 +242,22 @@ const removeUserCart = (req, res) => {
     });
 };
 
+const getCart = (req, res) => {
+  const { email } = req.params;
+  userModel
+    .find({ email: email })
+    .populate("cart")
+    .exec()
+    .then((result) => {
+      res.send(result[0].cart);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+
+
 module.exports = {
   Register,
   login,
@@ -250,5 +266,6 @@ module.exports = {
   checkEmail,
   resetPassword,
   addToUserCart,
-  removeUserCart
+  removeUserCart,
+  getCart
 };
