@@ -1,6 +1,6 @@
 const express = require("express");
 
-const {getOrder} = require("./../controllers/order");
+const {getOrder, createOrder} = require("./../controllers/order");
 
 const { authentication } = require("./../middleware/authentication");
 const { authorization } = require("./../middleware/authorization");
@@ -10,6 +10,7 @@ const { authorization } = require("./../middleware/authorization");
 
 
   orderRouter.get("/orders",authentication, getOrder);
+  orderRouter.post("/orders",authentication, createOrder);
 
 
 

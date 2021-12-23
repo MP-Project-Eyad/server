@@ -1,4 +1,7 @@
 const Order = require("./../../db/models/order");
+const companyModel = require("./../../db/models/company");
+const restaurantModel = require("./../../db/models/restaurant");
+
 // const _ = require("lodash");
 
 
@@ -10,7 +13,7 @@ function handleError(res, err) {
 
 // Get list of orders
 const getOrder = (req, res) => {
-    console.log(req.token.id);
+    // console.log(req.token.id);
   Order.find({ User: req.token.id })
     .populate("_restaurant")
     .populate("Company")
@@ -25,5 +28,31 @@ const getOrder = (req, res) => {
 
 
 
+const createOrder = (req, res)=> {
+    const { Company,User,_meals,_restaurant} =
+    req.body;
+  const newOrder = new Order({
+    Company,
+    User: req.token.id,
+    _meals,
+    _restaurant,
+  });
+  newOrder
+    .save()
+    .then((result) => {
+        restaurantModel
+        .findByIdAndUpdate(_restaurant, { $push: { Menu: result._id } })
+        .then((result) => {
+          res.status(201).json(result);
+        });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
 
-module.exports = {getOrder}
+
+
+
+
+module.exports = {getOrder , createOrder}
