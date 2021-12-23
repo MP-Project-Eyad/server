@@ -15,8 +15,8 @@ function handleError(res, err) {
 const getOrder = (req, res) => {
     // console.log(req.token.id);
   Order.find({ User: req.token.id })
-    .populate("_restaurant")
-    .populate("Company")
+    .populate("_restaurant Company _meals")
+    // .populate("Company")
     .exec().then((result) => {
         console.log(result);
         res.send(result);
