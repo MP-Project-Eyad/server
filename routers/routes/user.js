@@ -10,7 +10,8 @@ const {
   verifyAccount,
   checkEmail,
   resetPassword,
-  addToCart
+  addToUserCart,
+  removeUserCart
 } = require("./../controllers/user");
 const { authentication } = require("./../middleware/authentication");
 const { authorization } = require("./../middleware/authorization");
@@ -22,7 +23,10 @@ userRouter.post("/login", login);
 userRouter.post("/verify_account", verifyAccount);
 userRouter.post("/email_check", checkEmail);
 userRouter.post("/resetpass", resetPassword);
-userRouter.put("/yourcart/:email/:ObjectId", addToCart);
+// cart
+userRouter.put("/yourcart/:email/:ObjectId", addToUserCart);
+userRouter.put("/removecart/:email/:_id", removeUserCart);
+
 
 userRouter.get("/users", authentication,  getUser);
 

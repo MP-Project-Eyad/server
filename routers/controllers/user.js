@@ -206,7 +206,7 @@ const resetPassword = async (req, res) => {
 
 
 // Cart 
-const addToCart = (req, res) => {
+const addToUserCart = (req, res) => {
   const { email, ObjectId } = req.params;
   userModel.findOne({ ObjectId: req.params.ObjectId }).then((user) => {
    
@@ -226,6 +226,22 @@ const addToCart = (req, res) => {
   });
 };
 
+const removeUserCart = (req, res) => {
+  const { email, _id } = req.params;
+  userModel
+    .findOneAndUpdate(
+      { email: email },
+      { $pull: { cart: _id } },
+      { new: true }
+    )
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
 module.exports = {
   Register,
   login,
@@ -233,5 +249,6 @@ module.exports = {
   verifyAccount,
   checkEmail,
   resetPassword,
-  addToCart
+  addToUserCart,
+  removeUserCart
 };
