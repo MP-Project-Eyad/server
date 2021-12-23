@@ -23,6 +23,9 @@ app.use(restaurantRouter)
 const foodmenuRouter = require("./routers/routes/foodmenu");
 app.use(foodmenuRouter)
 
+const orderRouter = require("./routers/routes/order");
+app.use(orderRouter)
+
 
 
 

@@ -249,6 +249,7 @@ const getCart = (req, res) => {
     .populate("cart")
     .exec()
     .then((result) => {
+      console.log(result);
       res.send(result[0].cart);
     })
     .catch((err) => {
