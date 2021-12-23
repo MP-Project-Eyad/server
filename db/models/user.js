@@ -9,6 +9,7 @@ const user = new mongoose.Schema({
   active: { type: Boolean, default: false },
   avatar: { type: String, default: "http://norapc.org/wp-content/uploads/2015/07/avatar-blank.png" },
   role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", default: "61c0669bc57410a2c9733a01" },
+  cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "Foodmenu" }],
   location: {type: String},
 });
 
