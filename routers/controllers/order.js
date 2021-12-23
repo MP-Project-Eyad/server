@@ -52,7 +52,21 @@ const createOrder = (req, res)=> {
 };
 
 
+const deletedOrder = (req, res) => {
+  const { id } = req.params;
+
+  console.log(id);
+  Order
+    .findByIdAndRemove(id)
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
 
 
-
-module.exports = {getOrder , createOrder}
+module.exports = {getOrder , createOrder,deletedOrder}
