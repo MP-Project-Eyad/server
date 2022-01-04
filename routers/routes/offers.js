@@ -1,8 +1,8 @@
 const express = require("express");
 const {
-    createOffer,
-    getOffers,
-    getOfferByRestaurant,
+  createOffer,
+  getOffers,
+  getOfferByRestaurant,
 } = require("./../controllers/offers");
 
 const { authentication } = require("./../middleware/authentication");

@@ -2,7 +2,6 @@ const foodmenuModel = require("./../../db/models/foodmenu");
 const restaurantModel = require("./../../db/models/restaurant");
 
 const createItem = (req, res) => {
-  console.log(req.token);
   const { Name, Category, Picture, Desc, RestaurantName, price } = req.body;
   const newItem = new foodmenuModel({
     Name,
@@ -40,9 +39,9 @@ const getItems = (req, res) => {
 
 const getItemById = (req, res) => {
   const { id } = req.params;
-  console.log({RestaurantName: id });
+
   restaurantModel
-    .findById({_id: id })
+    .findById({ _id: id })
     .populate("Menu")
     .exec()
     .then((result) => {
@@ -57,7 +56,6 @@ const updateItem = (req, res) => {
   const { id } = req.params;
   const { Name, Picture, Category, Desc, price } = req.body;
 
-  console.log(id);
   foodmenuModel
     .findByIdAndUpdate(
       id,
@@ -66,7 +64,6 @@ const updateItem = (req, res) => {
     )
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch((err) => {
@@ -77,12 +74,10 @@ const updateItem = (req, res) => {
 const deletedItem = (req, res) => {
   const { id } = req.params;
 
-  console.log(id);
   foodmenuModel
     .findByIdAndRemove(id)
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch((err) => {

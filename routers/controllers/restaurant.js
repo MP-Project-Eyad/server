@@ -2,9 +2,7 @@ const restaurantModel = require("./../../db/models/restaurant");
 const companyModel = require("./../../db/models/company");
 
 const createRestaurant = (req, res) => {
-  // console.log(req.token);
-  const { Name, Category, Picture, CompanyName, Menu } =
-    req.body;
+  const { Name, Category, Picture, CompanyName, Menu } = req.body;
   const newRestaurant = new restaurantModel({
     Name,
     Picture,
@@ -15,10 +13,9 @@ const createRestaurant = (req, res) => {
   newRestaurant
     .save()
     .then((result) => {
-      
-          res.status(201).json(result);
-        })
-   
+      res.status(201).json(result);
+    })
+
     .catch((err) => {
       res.status(400).json(err);
     });
@@ -39,7 +36,7 @@ const getRestaurants = (req, res) => {
 
 const getRestaurantById = (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   restaurantModel
     .findById(id)
     .exec()
@@ -55,7 +52,6 @@ const updateRestaurant = (req, res) => {
   const { id } = req.params;
   const { Name, Category, Picture, DeliveryPrice, Menu } = req.body;
 
-  console.log(id);
   restaurantModel
     .findByIdAndUpdate(
       id,
@@ -64,7 +60,6 @@ const updateRestaurant = (req, res) => {
     )
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch((err) => {
@@ -75,12 +70,10 @@ const updateRestaurant = (req, res) => {
 const deletedRestaurant = (req, res) => {
   const { id } = req.params;
 
-  console.log(id);
   restaurantModel
     .findByIdAndRemove(id)
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch((err) => {

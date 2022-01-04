@@ -7,8 +7,15 @@ const user = new mongoose.Schema({
   passwordCode: { type: String },
   activeCode: { type: String },
   active: { type: Boolean, default: false },
-  avatar: { type: String, default: "http://norapc.org/wp-content/uploads/2015/07/avatar-blank.png" },
-  role: { type: mongoose.Schema.Types.ObjectId, ref: "Role", default: "61c0669bc57410a2c9733a01" },
+  avatar: {
+    type: String,
+    default: "http://norapc.org/wp-content/uploads/2015/07/avatar-blank.png",
+  },
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Role",
+    default: "61c0669bc57410a2c9733a01",
+  },
   cart: {
     items: [
       {
@@ -23,7 +30,7 @@ const user = new mongoose.Schema({
     ],
   },
 
-  location: {type: String},
+  location: { type: String },
 });
 
 user.methods.addToCart = function (item) {
@@ -79,4 +86,3 @@ user.methods.clearCart = function () {
 };
 
 module.exports = mongoose.model("User", user);
-

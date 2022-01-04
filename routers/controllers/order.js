@@ -10,13 +10,11 @@ function handleError(res, err) {
 
 // Get list of orders
 const getOrder = (req, res) => {
-  // console.log(req.token.id);
   Order.find({ User: req.token.id })
     .populate("_restaurant Company _meals")
-    // .populate("Company")
+
     .exec()
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch((err) => {
@@ -49,11 +47,9 @@ const createOrder = (req, res) => {
 const deletedOrder = (req, res) => {
   const { id } = req.params;
 
-  console.log(id);
   Order.findByIdAndRemove(id)
     .exec()
     .then((result) => {
-      console.log(result);
       res.status(200).json(result);
     })
     .catch((err) => {

@@ -18,8 +18,7 @@ const transport = nodemailer.createTransport({
 const Register = async (req, res) => {
   const { email, password, userName, avatar, role } = req.body;
   const lowerEmail = email.toLowerCase();
-  //   console.log(req.token);
-  //   console.log(req);
+
   const hashPass = await bcrypt.hash(password, SALT);
   let activeCode = "";
   const characters = "0123456789";
@@ -68,25 +67,23 @@ const login = (req, res) => {
     .findOne({ $or: [{ email }, { userName }] })
     .then(async (result) => {
       if (result) {
-        //   console.log(result);
         if (result.email == email || result.userName == userName) {
           const secret = process.env.SECRETKEY;
           const hashedpass = await bcrypt.compare(password, result.password);
-          // console.log(hashedpass);
-          // console.log(secret);
+
           const payload = {
             role: result.role,
             id: result._id,
             username: result.username,
             email: result.email,
           };
-          // console.log(result);
+
           option = {
             expiresIn: "6000000m",
           };
 
           const token = await jwt.sign(payload, secret, option);
-          // console.log("thistoken",token);
+
           if (hashedpass) {
             if (result.active == true) {
               res.status(200).json({ result, token });
@@ -120,8 +117,8 @@ const getUser = (req, res) => {
 };
 const verifyAccount = async (req, res) => {
   const { id, code } = req.body;
-  const user = await userModel.findOne({ _id: id});
-  console.log(user);
+  const user = await userModel.findOne({ _id: id });
+
   if (user.activeCode == code) {
     userModel
       .findByIdAndUpdate(id, { active: true, activeCode: "" }, { new: true })
@@ -135,8 +132,6 @@ const verifyAccount = async (req, res) => {
     res.status(400).json("Wrong code..");
   }
 };
-
-
 
 const checkEmail = async (req, res) => {
   const { email } = req.body;
@@ -155,19 +150,18 @@ const checkEmail = async (req, res) => {
     userModel
       .findByIdAndUpdate(user._id, { passwordCode }, { new: true })
       .then((result) => {
-        transport
-          .sendMail({
-            from: process.env.EMAIL,
-            to: result.email,
-            subject: "Reset Your Password",
-            html: `<h1>Reset Your Password</h1>
+        transport.sendMail({
+          from: process.env.EMAIL,
+          to: result.email,
+          subject: "Reset Your Password",
+          html: `<h1>Reset Your Password</h1>
                 <h2>Hello ${result.userName}</h2>
                 <h4>CODE: ${passwordCode}</h4>
                 <p>Please enter the code on the following link and reset your password</p>
                 <a href=http://localhost:3000/resetPassword/${result._id}> Click here</a>
                 </div>`,
-          })
-         
+        });
+
         res.status(200).json(result);
       })
       .catch((error) => {
@@ -206,37 +200,29 @@ const resetPassword = async (req, res) => {
   }
 };
 
-
-// Cart 
+// Cart
 const addToUserCart = (req, res) => {
   const { email, ObjectId } = req.params;
   userModel.findOne({ ObjectId: req.params.ObjectId }).then((user) => {
-   
     userModel
-        .findOneAndUpdate(
-          { email: email },
-          { $push: { cart: ObjectId } },
-          { new: true }
-        )
-        .then((result) => {
-          res.send(result);
-        })
-        .catch((err) => {
-          res.send(err);
-        });
-
+      .findOneAndUpdate(
+        { email: email },
+        { $push: { cart: ObjectId } },
+        { new: true }
+      )
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
   });
 };
-
 
 const removeUserCart = (req, res) => {
   const { email, _id } = req.params;
   userModel
-    .findOneAndUpdate(
-      { email: email },
-      { $pull: { cart: _id } },
-      { new: true }
-    )
+    .findOneAndUpdate({ email: email }, { $pull: { cart: _id } }, { new: true })
     .then((result) => {
       res.send(result);
     })
@@ -252,7 +238,6 @@ const getCart = (req, res) => {
     .populate("cart")
     .exec()
     .then((result) => {
-      console.log(result);
       res.send(result[0].cart);
     })
     .catch((err) => {
@@ -260,24 +245,21 @@ const getCart = (req, res) => {
     });
 };
 
-
-
 const postCart = (req, res, next) => {
-  // console.log(req.token);
-  const {itemId} = req.body;
+  const { itemId } = req.body;
   let targetItem;
   if (!itemId) {
     const error = new Error("ItemId not provided");
     error.statusCode = 404;
     throw error;
   }
-  foodMenuModel.findById(itemId)
+  foodMenuModel
+    .findById(itemId)
     .then((item) => {
       targetItem = item;
       return userModel.findById(req.token.id);
     })
     .then((user) => {
-      // console.log(targetItem);
       return user.addToCart(targetItem);
     })
     .then((result) => {
@@ -290,9 +272,10 @@ const postCart = (req, res, next) => {
 };
 
 const getCartQty = (req, res, next) => {
-  userModel.findById(req.token.id)
+  userModel
+    .findById(req.token.id)
     .then((user) => {
-      return user.populate("cart.items.itemId")
+      return user.populate("cart.items.itemId");
     })
     .then((user) => {
       const cartItems = user.cart.items;
@@ -302,13 +285,12 @@ const getCartQty = (req, res, next) => {
       });
       res.json({ cart: cartItems, totalPrice: totalPrice });
     })
-   
+
     .catch((err) => {
       if (!err.statusCode) err.statusCode = 500;
       next(err);
     });
 };
-
 
 const cartDelete = (req, res, next) => {
   const itemId = req.body.itemId;
@@ -317,8 +299,9 @@ const cartDelete = (req, res, next) => {
     error.statusCode = 404;
     throw error;
   }
-  userModel.findById(req.token.id)
-    
+  userModel
+    .findById(req.token.id)
+
     .then((user) => {
       return user.removeFromCart(itemId);
     })
@@ -332,14 +315,15 @@ const cartDelete = (req, res, next) => {
 };
 
 const cartUpdate = (req, res, next) => {
-  const {itemId} = req.params;
+  const { itemId } = req.params;
   if (!itemId) {
     const error = new Error("ItemId not provided");
     error.statusCode = 404;
     throw error;
   }
-  userModel.findById(req.token.id)
-    
+  userModel
+    .findById(req.token.id)
+
     .then((user) => {
       return user.reduceQuantity(itemId);
     })
@@ -356,11 +340,10 @@ const getUserById = (req, res) => {
   const { id } = req.params;
   userModel
     .find({ _id: id }, { password: 0, passwordCode: 0 })
-    .populate({ 
-      path: 'cart.items.itemId',
-      
-   })
-    
+    .populate({
+      path: "cart.items.itemId",
+    })
+
     .then((result) => {
       if (result) {
         res.status(200).json(result);
@@ -378,9 +361,13 @@ const updateUser = async (req, res) => {
   const { email, password, userName, avatar } = req.body;
   const { id } = req.params;
   userModel
-    .findByIdAndUpdate(id, {
-      $set: { email, password, userName, avatar },
-    },{new: true})
+    .findByIdAndUpdate(
+      id,
+      {
+        $set: { email, password, userName, avatar },
+      },
+      { new: true }
+    )
     .then((result) => {
       if (result) {
         res.status(200).json(result);
@@ -408,5 +395,5 @@ module.exports = {
   getCartQty,
   postCart,
   cartDelete,
-  cartUpdate
+  cartUpdate,
 };

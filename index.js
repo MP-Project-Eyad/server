@@ -7,27 +7,26 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
-const roleRouter = require('./routers/routes/role');
+const roleRouter = require("./routers/routes/role");
 app.use(roleRouter);
 
-const userRouter = require('./routers/routes/user');
+const userRouter = require("./routers/routes/user");
 app.use(userRouter);
 
-const companyRouter = require('./routers/routes/company');
+const companyRouter = require("./routers/routes/company");
 app.use(companyRouter);
 
 const restaurantRouter = require("./routers/routes/restaurant");
-app.use(restaurantRouter)
+app.use(restaurantRouter);
 
 const foodmenuRouter = require("./routers/routes/foodmenu");
-app.use(foodmenuRouter)
+app.use(foodmenuRouter);
 
 const orderRouter = require("./routers/routes/order");
-app.use(orderRouter)
+app.use(orderRouter);
 
 const offersRouter = require("./routers/routes/offers");
-app.use(offersRouter)
+app.use(offersRouter);
 
 const paymentRouter = require("./routers/routes/payment");
 app.use(paymentRouter);

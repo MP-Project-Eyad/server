@@ -18,8 +18,7 @@ const transport = nodemailer.createTransport({
 const companyRegister = async (req, res) => {
   const { email, password, Name, avatar, Restaurant } = req.body;
   const lowerEmail = email.toLowerCase();
-  //   console.log(req.token);
-  //   console.log(req);
+
   const hashPass = await bcrypt.hash(password, SALT);
   let activeCode = "";
   const characters = "0123456789";
@@ -36,7 +35,7 @@ const companyRegister = async (req, res) => {
     Name,
     avatar,
     activeCode,
-    Restaurant
+    Restaurant,
   });
   newCompany
     .save()
@@ -53,7 +52,7 @@ const companyRegister = async (req, res) => {
               <a href=http://localhost:3000/verify_account/${result._id}> Click here</a>
               </div>`,
         })
-        
+
         .catch((err) => console.log(err));
 
       res.status(201).json(result);
@@ -70,25 +69,23 @@ const companyLogin = (req, res) => {
     .findOne({ $or: [{ email }, { Name }] })
     .then(async (result) => {
       if (result) {
-        //   console.log(result);
         if (result.email == email || result.Name == userName) {
           const secret = process.env.SECRETKEY;
           const hashedpass = await bcrypt.compare(password, result.password);
-          // console.log(hashedpass);
-          // console.log(secret);
+
           const payload = {
             role: result.role,
             id: result._id,
             name: result.Name,
             email: result.email,
           };
-          console.log(result.Name);
+
           option = {
             expiresIn: "6000000m",
           };
 
           const token = await jwt.sign(payload, secret, option);
-          // console.log("thistoken",token);
+
           if (hashedpass) {
             if (result.active == true) {
               res.status(200).json({ result, token });
@@ -110,13 +107,11 @@ const companyLogin = (req, res) => {
     });
 };
 
-
-
 const verifyAccountComp = async (req, res) => {
   const { id, code } = req.body;
 
   const user = await companyModel.findOne({ _id: id });
-  console.log(user);
+
   if (user.activeCode == code) {
     companyModel
       .findByIdAndUpdate(id, { active: true, activeCode: "" }, { new: true })

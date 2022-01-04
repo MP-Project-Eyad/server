@@ -18,7 +18,7 @@ const {
   postCart,
   getCartQty,
   cartDelete,
-  cartUpdate
+  cartUpdate,
 } = require("./../controllers/user");
 const { authentication } = require("./../middleware/authentication");
 const { authorization } = require("./../middleware/authorization");
@@ -35,22 +35,13 @@ userRouter.put("/yourcart/:email/:ObjectId", addToUserCart);
 userRouter.put("/removecart/:email/:_id", removeUserCart);
 userRouter.get("/cart/:email", getCart);
 
-
-userRouter.get("/users",  getUser);
+userRouter.get("/users", getUser);
 userRouter.get("/user/:id", authentication, getUserById);
-userRouter.put("/edituser/:id",authentication, updateUser);
+userRouter.put("/edituser/:id", authentication, updateUser);
 
-userRouter.post("/cart",authentication , postCart);
-userRouter.get("/cart",authentication , getCartQty);
-userRouter.post(
-  "/delete-cart-item",
-  authentication,
-  cartDelete
-);
-userRouter.post(
-  "/reduce-cart-item/:itemId",
-  authentication,
-  cartUpdate
-);
+userRouter.post("/cart", authentication, postCart);
+userRouter.get("/cart", authentication, getCartQty);
+userRouter.post("/delete-cart-item", authentication, cartDelete);
+userRouter.post("/reduce-cart-item/:itemId", authentication, cartUpdate);
 
 module.exports = userRouter;

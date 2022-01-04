@@ -2,7 +2,6 @@ const offerModel = require("./../../db/models/offers");
 const restaurantModel = require("./../../db/models/restaurant");
 
 const createOffer = (req, res) => {
-  // console.log(req.token);
   const { StartDate, EndDate, DeliveryPrice, Restaurant, CompanyOffer } =
     req.body;
   const newOffer = new offerModel({
@@ -15,9 +14,7 @@ const createOffer = (req, res) => {
   newOffer
     .save()
     .then((result) => {
-      
-          res.status(201).json(result);
-        
+      res.status(201).json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -25,7 +22,7 @@ const createOffer = (req, res) => {
 };
 
 const getOffers = (req, res) => {
-    offerModel
+  offerModel
     .find({})
     .populate("Restaurant", "Name  -_id")
     .populate("CompanyOffer", "Name  -_id")
@@ -39,12 +36,12 @@ const getOffers = (req, res) => {
 
 const getOfferByRestaurant = (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   offerModel
-    .find({Restaurant:id})
+    .find({ Restaurant: id })
     .populate("Restaurant", "Name  -_id")
     .populate("CompanyOffer", "Name  -_id")
-    
+
     .exec()
     .then((result) => {
       res.status(200).json(result);
@@ -54,10 +51,8 @@ const getOfferByRestaurant = (req, res) => {
     });
 };
 
-
 module.exports = {
-    createOffer,
-    getOffers,
-    getOfferByRestaurant,
-    
-  };
+  createOffer,
+  getOffers,
+  getOfferByRestaurant,
+};
