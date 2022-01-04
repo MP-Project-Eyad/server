@@ -36,6 +36,7 @@ const companyRegister = async (req, res) => {
     Name,
     avatar,
     activeCode,
+    Restaurant
   });
   newCompany
     .save()
@@ -52,7 +53,9 @@ const companyRegister = async (req, res) => {
               <a href=http://localhost:3000/verify_account/${result._id}> Click here</a>
               </div>`,
         })
+        
         .catch((err) => console.log(err));
+
       res.status(201).json(result);
     })
     .catch((err) => {
@@ -106,6 +109,9 @@ const companyLogin = (req, res) => {
       res.status(400).json(err);
     });
 };
+
+
+
 const verifyAccountComp = async (req, res) => {
   const { id, code } = req.body;
 

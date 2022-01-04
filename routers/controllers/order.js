@@ -4,33 +4,28 @@ const restaurantModel = require("./../../db/models/restaurant");
 
 // const _ = require("lodash");
 
-
-
-
 function handleError(res, err) {
   return res.send(500, err);
 }
 
 // Get list of orders
 const getOrder = (req, res) => {
-    // console.log(req.token.id);
+  // console.log(req.token.id);
   Order.find({ User: req.token.id })
     .populate("_restaurant Company _meals")
     // .populate("Company")
-    .exec().then((result) => {
-        console.log(result);
-        res.send(result);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 };
 
-
-
-const createOrder = (req, res)=> {
-    const { Company,User,_meals,_restaurant} =
-    req.body;
+const createOrder = (req, res) => {
+  const { Company, User, _meals, _restaurant } = req.body;
   const newOrder = new Order({
     Company,
     User: req.token.id,
@@ -40,7 +35,7 @@ const createOrder = (req, res)=> {
   newOrder
     .save()
     .then((result) => {
-        restaurantModel
+      restaurantModel
         .findByIdAndUpdate(_restaurant, { $push: { Menu: result._id } })
         .then((result) => {
           res.status(201).json(result);
@@ -51,13 +46,11 @@ const createOrder = (req, res)=> {
     });
 };
 
-
 const deletedOrder = (req, res) => {
   const { id } = req.params;
 
   console.log(id);
-  Order
-    .findByIdAndRemove(id)
+  Order.findByIdAndRemove(id)
     .exec()
     .then((result) => {
       console.log(result);
@@ -68,5 +61,4 @@ const deletedOrder = (req, res) => {
     });
 };
 
-
-module.exports = {getOrder , createOrder,deletedOrder}
+module.exports = { getOrder, createOrder, deletedOrder };

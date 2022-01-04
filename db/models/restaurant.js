@@ -5,7 +5,6 @@ const restaurant = new mongoose.Schema({
   CompanyName: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
   Category: { type: String, required: true },
   Picture: { type: String, required: true },
-  DeliveryPrice: { type: Number },
   Menu: [{ type: mongoose.Schema.Types.ObjectId, ref: "Foodmenu" }],
 });
 

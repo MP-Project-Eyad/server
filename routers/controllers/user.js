@@ -1,4 +1,5 @@
 const userModel = require("./../../db/models/user");
+const foodMenuModel = require("./../../db/models/foodmenu");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -49,7 +50,7 @@ const Register = async (req, res) => {
               <h2>Hello ${result.userName}</h2>
               <h4>CODE: ${activeCode}</h4>
               <p>Thank you for registering. Please confirm your email by entring the code on the following link</p>
-              <a href=http://localhost:3000/verify_account/${result._id}> Click here</a>
+              <a href=http://localhost:3000/verifyAccount/${result._id}> Click here</a>
               </div>`,
         })
         .catch((err) => console.log(err));
@@ -119,8 +120,7 @@ const getUser = (req, res) => {
 };
 const verifyAccount = async (req, res) => {
   const { id, code } = req.body;
-
-  const user = await userModel.findOne({ _id: id });
+  const user = await userModel.findOne({ _id: id});
   console.log(user);
   if (user.activeCode == code) {
     userModel
@@ -135,6 +135,8 @@ const verifyAccount = async (req, res) => {
     res.status(400).json("Wrong code..");
   }
 };
+
+
 
 const checkEmail = async (req, res) => {
   const { email } = req.body;
@@ -159,13 +161,13 @@ const checkEmail = async (req, res) => {
             to: result.email,
             subject: "Reset Your Password",
             html: `<h1>Reset Your Password</h1>
-                <h2>Hello ${result.username}</h2>
+                <h2>Hello ${result.userName}</h2>
                 <h4>CODE: ${passwordCode}</h4>
                 <p>Please enter the code on the following link and reset your password</p>
-                <a href=https://social-media-project-frontend.herokuapp.com/reset_password/${result._id}> Click here</a>
+                <a href=http://localhost:3000/resetPassword/${result._id}> Click here</a>
                 </div>`,
           })
-          .catch((err) => console.log(err));
+         
         res.status(200).json(result);
       })
       .catch((error) => {
@@ -226,6 +228,7 @@ const addToUserCart = (req, res) => {
   });
 };
 
+
 const removeUserCart = (req, res) => {
   const { email, _id } = req.params;
   userModel
@@ -259,14 +262,151 @@ const getCart = (req, res) => {
 
 
 
+const postCart = (req, res, next) => {
+  // console.log(req.token);
+  const {itemId} = req.body;
+  let targetItem;
+  if (!itemId) {
+    const error = new Error("ItemId not provided");
+    error.statusCode = 404;
+    throw error;
+  }
+  foodMenuModel.findById(itemId)
+    .then((item) => {
+      targetItem = item;
+      return userModel.findById(req.token.id);
+    })
+    .then((user) => {
+      // console.log(targetItem);
+      return user.addToCart(targetItem);
+    })
+    .then((result) => {
+      res.status(200).json({ message: "Item successfully added to cart." });
+    })
+    .catch((err) => {
+      if (!err.statusCode) err.statusCode = 500;
+      next(err);
+    });
+};
+
+const getCartQty = (req, res, next) => {
+  userModel.findById(req.token.id)
+    .then((user) => {
+      return user.populate("cart.items.itemId")
+    })
+    .then((user) => {
+      const cartItems = user.cart.items;
+      let totalPrice = 0;
+      cartItems.forEach((item) => {
+        totalPrice = totalPrice + item.quantity * item.itemId.price;
+      });
+      res.json({ cart: cartItems, totalPrice: totalPrice });
+    })
+   
+    .catch((err) => {
+      if (!err.statusCode) err.statusCode = 500;
+      next(err);
+    });
+};
+
+
+const cartDelete = (req, res, next) => {
+  const itemId = req.body.itemId;
+  if (!itemId) {
+    const error = new Error("ItemId not provided");
+    error.statusCode = 404;
+    throw error;
+  }
+  userModel.findById(req.token.id)
+    
+    .then((user) => {
+      return user.removeFromCart(itemId);
+    })
+    .then((result) => {
+      res.status(200).json({ message: "Item successfully removed from cart." });
+    })
+    .catch((err) => {
+      if (!err.statusCode) err.statusCode = 500;
+      next(err);
+    });
+};
+
+const cartUpdate = (req, res, next) => {
+  const {itemId} = req.params;
+  if (!itemId) {
+    const error = new Error("ItemId not provided");
+    error.statusCode = 404;
+    throw error;
+  }
+  userModel.findById(req.token.id)
+    
+    .then((user) => {
+      return user.reduceQuantity(itemId);
+    })
+    .then((result) => {
+      res.status(200).json({ message: "Item successfully updated." });
+    })
+    .catch((err) => {
+      if (!err.statusCode) err.statusCode = 500;
+      next(err);
+    });
+};
+
+const getUserById = (req, res) => {
+  const { id } = req.params;
+  userModel
+    .find({ _id: id }, { password: 0, passwordCode: 0 })
+    .populate({ 
+      path: 'cart.items.itemId',
+      
+   })
+    
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json(result);
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
+const updateUser = async (req, res) => {
+  // const hashpwd2 = await bcrypt.hash(password, SALT);
+  const { email, password, userName, avatar } = req.body;
+  const { id } = req.params;
+  userModel
+    .findByIdAndUpdate(id, {
+      $set: { email, password, userName, avatar },
+    },{new: true})
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(400).json(err);
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 module.exports = {
   Register,
   login,
   getUser,
+  getUserById,
+  updateUser,
   verifyAccount,
   checkEmail,
   resetPassword,
   addToUserCart,
   removeUserCart,
-  getCart
+  getCart,
+  getCartQty,
+  postCart,
+  cartDelete,
+  cartUpdate
 };

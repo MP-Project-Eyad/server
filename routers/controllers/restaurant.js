@@ -3,25 +3,22 @@ const companyModel = require("./../../db/models/company");
 
 const createRestaurant = (req, res) => {
   // console.log(req.token);
-  const { Name, Category, Picture, DeliveryPrice, CompanyName, Menu } =
+  const { Name, Category, Picture, CompanyName, Menu } =
     req.body;
   const newRestaurant = new restaurantModel({
     Name,
     Picture,
     Category,
-    DeliveryPrice,
     Menu,
     CompanyName,
   });
   newRestaurant
     .save()
     .then((result) => {
-      companyModel
-        .findByIdAndUpdate(CompanyName, { $push: { Restaurant: result._id } })
-        .then((result) => {
+      
           res.status(201).json(result);
-        });
-    })
+        })
+   
     .catch((err) => {
       res.status(400).json(err);
     });
@@ -31,6 +28,7 @@ const getRestaurants = (req, res) => {
   restaurantModel
     .find({})
     .populate("Menu", "Name  -_id")
+    .populate("CompanyName", "Name  -_id")
     .then((result) => {
       res.status(200).json(result);
     })

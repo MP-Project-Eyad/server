@@ -26,8 +26,11 @@ app.use(foodmenuRouter)
 const orderRouter = require("./routers/routes/order");
 app.use(orderRouter)
 
+const offersRouter = require("./routers/routes/offers");
+app.use(offersRouter)
 
-
+const paymentRouter = require("./routers/routes/payment");
+app.use(paymentRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

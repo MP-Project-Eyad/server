@@ -29,7 +29,7 @@ const createItem = (req, res) => {
 const getItems = (req, res) => {
   foodmenuModel
     .find({})
-    .populate("RestaurantName", "Name  -_id")
+    .populate("RestaurantName", "Name")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -40,12 +40,13 @@ const getItems = (req, res) => {
 
 const getItemById = (req, res) => {
   const { id } = req.params;
-  console.log(id);
-  foodmenuModel
-    .findById(id)
+  console.log({RestaurantName: id });
+  restaurantModel
+    .findById({_id: id })
+    .populate("Menu")
     .exec()
     .then((result) => {
-      res.status(200).json(result);
+      res.status(200).json(result.Menu);
     })
     .catch((err) => {
       res.status(400).json(err);
