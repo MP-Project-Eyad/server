@@ -33,6 +33,20 @@ const getOffers = (req, res) => {
       res.status(400).json(err);
     });
 };
+const getOfferById = (req, res) => {
+  const { id } = req.params;
+
+  offerModel
+    .findById(id)
+    .exec()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+
 
 const getOfferByRestaurant = (req, res) => {
   const { id } = req.params;
@@ -55,4 +69,5 @@ module.exports = {
   createOffer,
   getOffers,
   getOfferByRestaurant,
+  getOfferById
 };
